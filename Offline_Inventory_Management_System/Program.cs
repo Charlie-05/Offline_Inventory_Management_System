@@ -1,3 +1,5 @@
+using Offline_Inventory_Management_System.DataBase;
+
 using Offline_Inventory_Management_System.Views;
 
 namespace Offline_Inventory_Management_System
@@ -13,6 +15,7 @@ namespace Offline_Inventory_Management_System
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
+            DbConfig.InitializeDatabase();
             Application.Run(new AuthView());
         }
     }
