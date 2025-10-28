@@ -1,5 +1,4 @@
 using Offline_Inventory_Management_System.DataBase;
-
 using Offline_Inventory_Management_System.Views;
 
 namespace Offline_Inventory_Management_System
