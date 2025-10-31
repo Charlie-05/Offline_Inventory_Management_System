@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Offline_Inventory_Management_System.Models
 {
-    public class ProductCategory
+    public class UnitOfMeasurement
     {
-        public int ProductCategoryId { get; set; }
-        public string Name { get; set; }
+        public string Label { get; set; }
 
-        public string UnitOfMeasurement { get; set; }
-
+        public string  Key { get; set; }
     }
 }

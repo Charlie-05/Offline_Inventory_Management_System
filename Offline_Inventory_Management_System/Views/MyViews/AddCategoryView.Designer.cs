@@ -1,6 +1,6 @@
-﻿namespace Offline_Inventory_Management_System.Views
+﻿namespace Offline_Inventory_Management_System.Views.MyViews
 {
-    partial class AddProductView
+    partial class AddCategoryView
     {
         /// <summary>
         /// Required designer variable.
@@ -28,56 +28,78 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
             textBox1 = new TextBox();
             button1 = new Button();
+            label1 = new Label();
+            label2 = new Label();
+            comboBox1 = new ComboBox();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(35, 21);
-            label1.Name = "label1";
-            label1.Size = new Size(80, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Add Category";
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(80, 53);
+            textBox1.Location = new Point(254, 143);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(304, 23);
-            textBox1.TabIndex = 1;
-            textBox1.TextChanged += textBox1_TextChanged;
+            textBox1.Size = new Size(250, 23);
+            textBox1.TabIndex = 0;
             // 
             // button1
             // 
-            button1.Location = new Point(470, 53);
+            button1.Location = new Point(318, 228);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
-            button1.TabIndex = 2;
+            button1.TabIndex = 1;
             button1.Text = "Add";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
-            // AddProductView
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(125, 146);
+            label1.Name = "label1";
+            label1.Size = new Size(99, 15);
+            label1.TabIndex = 2;
+            label1.Text = "Category Name : ";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(125, 194);
+            label2.Name = "label2";
+            label2.Size = new Size(130, 15);
+            label2.TabIndex = 3;
+            label2.Text = "Unit Of Measurement : ";
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(261, 191);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(121, 23);
+            comboBox1.TabIndex = 4;
+            // 
+            // AddCategoryView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(comboBox1);
+            Controls.Add(label2);
+            Controls.Add(label1);
             Controls.Add(button1);
             Controls.Add(textBox1);
-            Controls.Add(label1);
-            Name = "AddProductView";
-            Text = "AddProductView";
+            Name = "AddCategoryView";
+            Text = "AddCategoryView";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label label1;
         private TextBox textBox1;
         private Button button1;
+        private Label label1;
+        private Label label2;
+        private ComboBox comboBox1;
     }
 }

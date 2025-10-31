@@ -43,6 +43,9 @@ namespace Offline_Inventory_Management_System.Views
                     if (Password == "12345")
                     {
                         MessageBox.Show("Login Success");
+                        MainForm mainForm = new MainForm();
+                        this.Hide();
+                        mainForm.Show();
                     }
                     else
                     {
