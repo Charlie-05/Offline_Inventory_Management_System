@@ -62,9 +62,9 @@ namespace Offline_Inventory_Management_System.Views
 
             string name = textBox1.Text;
             int categoryId = (int)comboBox1.SelectedValue;
-            int price = int.Parse(textBox2.Text);
-            int quantity = int.Parse(textBox3.Text);
-            int stockAlertOn = int.Parse(textBox4.Text);
+            decimal price = decimal.Parse(textBox2.Text);
+            decimal quantity = decimal.Parse(textBox3.Text);
+            decimal stockAlertOn = decimal.Parse(textBox4.Text);
 
             Product product = new Product() { ProductName = name, ProductCategoryId= categoryId , Price = price , Quantity = quantity , StockAlertOn = stockAlertOn};
             

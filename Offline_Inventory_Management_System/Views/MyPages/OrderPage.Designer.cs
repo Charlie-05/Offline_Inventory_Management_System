@@ -28,17 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
+            button1 = new Button();
+            dataGridView1 = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
+            // 
+            // button1
+            // 
+            button1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Location = new Point(488, 34);
+            button1.Name = "button1";
+            button1.Size = new Size(130, 45);
+            button1.TabIndex = 0;
+            button1.Text = "Add Orders";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(25, 129);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowHeadersWidth = 51;
+            dataGridView1.Size = new Size(593, 188);
+            dataGridView1.TabIndex = 1;
             // 
             // OrderPage
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(dataGridView1);
+            Controls.Add(button1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "OrderPage";
-            Size = new Size(575, 442);
+            Size = new Size(657, 589);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Button button1;
+        private DataGridView dataGridView1;
     }
 }

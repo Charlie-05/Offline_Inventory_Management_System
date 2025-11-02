@@ -32,7 +32,7 @@ namespace Offline_Inventory_Management_System.Views.MyViews
         {
             List<UnitOfMeasurement> units = new List<UnitOfMeasurement>
             {
-                new UnitOfMeasurement { Label  = "Number", Key = "1" },
+                new UnitOfMeasurement { Label  = "Number", Key = "" },
                 new UnitOfMeasurement { Label = "Kilograms", Key = "kg" },
                 new UnitOfMeasurement { Label = "Litres", Key = "l" }
             };
@@ -50,6 +50,11 @@ namespace Offline_Inventory_Management_System.Views.MyViews
             ProductCategoryRepo repo = new ProductCategoryRepo();
             var res = repo.AddProductCategory(category);
             MessageBox.Show(res.Name);
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
 
         }
     }
