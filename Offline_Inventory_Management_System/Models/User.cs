@@ -14,5 +14,14 @@ namespace Offline_Inventory_Management_System.Models
         public string UserName  { get; set; }
         public string Password {  get; set; }
 
+        public int UserRoleID { get; set; }
+
+    }
+
+    public enum Role
+    {
+        Admin = 1,
+        Manager = 2,
+        Cashier = 3
     }
 }

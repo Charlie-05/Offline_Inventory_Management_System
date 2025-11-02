@@ -54,8 +54,16 @@ namespace Offline_Inventory_Management_System.DataBase
                             UserID INT IDENTITY(1,1) PRIMARY KEY,
                             Name NVARCHAR(100) NOT NULL,
                             UserName NVARCHAR(100) NOT NULL UNIQUE,
-                            Password NVARCHAR(100)
+                            Password NVARCHAR(100),
+                            UserRoleID INT NOT NULL
                         );
+                        
+                        IF NOT EXISTS (SELECT * FROM Users WHERE UserRoleId = 1)
+                        BEGIN
+                            INSERT INTO Users (Name, UserName, Password, UserRoleID)
+                            VALUES ('Admin', 'admin', '12345', 1);
+                            
+                        END
 
                         IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'ProductCategories')
                         CREATE TABLE ProductCategories (
@@ -98,6 +106,7 @@ namespace Offline_Inventory_Management_System.DataBase
                           BillProductID INT IDENTITY(1, 1) PRIMARY KEY,
                           ProductId INT NOT NULL,
                           BillId INT NOT NULL,
+                         BillQuantity DECIMAL(18, 2) NOT NULL,
                           FOREIGN KEY (ProductId) REFERENCES Products(ProductID),
                           FOREIGN KEY (BillId) REFERENCES Bills(BillId)
                           );   
@@ -107,6 +116,7 @@ namespace Offline_Inventory_Management_System.DataBase
                           OrderProductID INT IDENTITY(1, 1) PRIMARY KEY,
                           ProductId INT NOT NULL,
                           OrderId INT NOT NULL,
+                             OrderQuantity DECIMAL(18, 2) NOT NULL,
                           FOREIGN KEY (ProductId) REFERENCES Products(ProductID),
                           FOREIGN KEY (OrderId) REFERENCES Orders(OrderId)
                           );   

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Offline_Inventory_Management_System.Views.MyPages;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,7 +24,8 @@ namespace Offline_Inventory_Management_System.Views
             // Wire button clicks
             button1.Click += (s, e) => Router.Navigate(new ProductPage());
             button2.Click += (s, e) => Router.Navigate(new OrderPage());
-           // button3.Click += (s, e) => Router.Navigate(new ReportsPage());
+            button3.Click += (s, e) => Router.Navigate(new BillPage());
+            button4.Click += (s, e) => Router.Navigate(new UserPage());
         }
     }
 }

@@ -58,19 +58,84 @@ namespace Offline_Inventory_Management_System.Views
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            ProductRepo productRepo = new ProductRepo();
+            try
+            {
+                // Validate empty fields
+                if (string.IsNullOrWhiteSpace(textBox1.Text))
+                {
+                    MessageBox.Show("Product name cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-            string name = textBox1.Text;
-            int categoryId = (int)comboBox1.SelectedValue;
-            decimal price = decimal.Parse(textBox2.Text);
-            decimal quantity = decimal.Parse(textBox3.Text);
-            decimal stockAlertOn = decimal.Parse(textBox4.Text);
+                if (comboBox1.SelectedValue == null)
+                {
+                    MessageBox.Show("Please select a product category.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-            Product product = new Product() { ProductName = name, ProductCategoryId= categoryId , Price = price , Quantity = quantity , StockAlertOn = stockAlertOn};
-            
-            var res = productRepo.AddProduct(product);
-            MessageBox.Show(res.ProductName);
+                if (string.IsNullOrWhiteSpace(textBox2.Text) ||
+                    string.IsNullOrWhiteSpace(textBox3.Text) ||
+                    string.IsNullOrWhiteSpace(textBox4.Text))
+                {
+                    MessageBox.Show("Price, Quantity, and Stock Alert fields cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
+                // Validate numeric fields
+                if (!decimal.TryParse(textBox2.Text, out decimal price))
+                {
+                    MessageBox.Show("Invalid price. Please enter a valid decimal number.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!decimal.TryParse(textBox3.Text, out decimal quantity))
+                {
+                    MessageBox.Show("Invalid quantity. Please enter a valid number.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!decimal.TryParse(textBox4.Text, out decimal stockAlertOn))
+                {
+                    MessageBox.Show("Invalid stock alert value. Please enter a valid number.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Category ID validation
+                int categoryId;
+                if (!int.TryParse(comboBox1.SelectedValue.ToString(), out categoryId))
+                {
+                    MessageBox.Show("Invalid category selected.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Create product object
+                Product product = new Product()
+                {
+                    ProductName = textBox1.Text.Trim(),
+                    ProductCategoryId = categoryId,
+                    Price = price,
+                    Quantity = quantity,
+                    StockAlertOn = stockAlertOn
+                };
+
+                // Add product to repository
+                ProductRepo productRepo = new ProductRepo();
+                var res = productRepo.AddProduct(product);
+
+                MessageBox.Show($"Product '{res.ProductName}' added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Optionally clear form fields
+                textBox1.Clear();
+                textBox2.Clear();
+                textBox3.Clear();
+                textBox4.Clear();
+                comboBox1.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
     }
 }

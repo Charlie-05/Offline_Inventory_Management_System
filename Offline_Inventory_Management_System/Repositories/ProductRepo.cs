@@ -191,7 +191,7 @@ namespace Offline_Inventory_Management_System.Repositories
         public Product UpdateProductQuantity(int productID, decimal quantity, bool isAdded)
         {
             Product getProduct = this.ReadProductById(productID);
-            decimal newQuantity;
+            decimal newQuantity = 0;
             if (getProduct != null)
             {
                 if (isAdded)
@@ -205,10 +205,7 @@ namespace Offline_Inventory_Management_System.Repositories
                     {
                         newQuantity = getProduct.Quantity - quantity;
                     }
-                    else
-                    {
-                        throw new Exception("Quantity Unavailable");
-                    }
+                   
                 }
                 using (SqlConnection conn = new SqlConnection(DBConnectionString))
                 {
