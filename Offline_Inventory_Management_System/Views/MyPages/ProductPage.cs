@@ -13,7 +13,7 @@ namespace Offline_Inventory_Management_System.Views
     public partial class ProductPage : UserControl
     {
         private BindingList<Product> productBindingList;
-        private DataGridViewRow editingRow = null; // currently edited row
+        private DataGridViewRow editingRow = null; 
 
         public ProductPage()
         {

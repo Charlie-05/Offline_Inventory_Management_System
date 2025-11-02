@@ -58,9 +58,8 @@
             dataGridView1.Margin = new Padding(3, 4, 3, 4);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(665, 221);
+            dataGridView1.Size = new Size(688, 221);
             dataGridView1.TabIndex = 1;
-            dataGridView1.ReadOnly = false;
             // 
             // button2
             // 

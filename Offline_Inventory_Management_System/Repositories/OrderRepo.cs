@@ -14,30 +14,67 @@ namespace Offline_Inventory_Management_System.Repositories
         static string DBConnectionString = DbConfig.ConnectionString;
         public Order AddOrder(Order order)
         {
-
             using (SqlConnection conn = new SqlConnection(DBConnectionString))
             {
                 conn.Open();
-                string query = "INSERT INTO Orders(OrderedOn , OrderAmount) " +
-                    " values(@OrderedOn , @OrderAmount)";
-
+                string query = @"
+            INSERT INTO Orders (OrderedOn, OrderAmount) 
+            VALUES (@OrderedOn, @OrderAmount);
+            SELECT CAST(SCOPE_IDENTITY() AS INT);"; // Get the generated OrderId
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@OrderedOn", order.OrderedOn);
                     cmd.Parameters.AddWithValue("@OrderAmount", order.OrderAmount);
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    if (rowsAffected > 0)
-                    {
-                        return order;
-                    }
-                    else
-                    {
-                        throw new Exception();
-                    }
+                    int orderId = (int)cmd.ExecuteScalar();
+                    order.OrderId = orderId; // Set the generated ID
+                    return order;
                 }
             }
         }
+
+        public List<Order> ReadAllOrders()
+        {
+            var orders = new List<Order>();
+
+            using (SqlConnection conn = new SqlConnection(DBConnectionString))
+            {
+                string query = "SELECT * FROM Orders";
+
+
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+
+                                var order = new Order
+                                {
+                                    OrderedOn = Convert.ToDateTime(reader["OrderedOn"]),
+                                    OrderAmount = Convert.ToDecimal(reader["OrderAmount"]),
+                                    OrderId = Convert.ToInt32(reader["OrderId"])
+
+                                };
+                                orders.Add(order);
+                            }
+
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            return orders;
+        }
+
     }
 }

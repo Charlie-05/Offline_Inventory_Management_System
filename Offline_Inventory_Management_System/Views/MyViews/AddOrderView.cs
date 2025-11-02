@@ -97,6 +97,30 @@ namespace Offline_Inventory_Management_System.Views.MyViews
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // Ensure columns exist
+            if (dataGridView1.Columns.Count == 0)
+            {
+                dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = "ProductId",
+                    HeaderText = "Product ID",
+                    Visible = false
+                });
+
+                dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = "ProductName",
+                    HeaderText = "Product Name"
+                });
+
+                dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    Name = "Quantity",
+                    HeaderText = "Quantity"
+                });
+            }
+
+            // Existing validation 
             if (comboBox1.SelectedItem == null)
             {
                 MessageBox.Show("Please select a product first.");
@@ -119,6 +143,8 @@ namespace Offline_Inventory_Management_System.Views.MyViews
             // Prevent duplicates
             foreach (DataGridViewRow r in dataGridView1.Rows)
             {
+                if (r.IsNewRow) continue;
+
                 if ((int)r.Cells["ProductId"].Value == selectedProduct.ProductId)
                 {
                     MessageBox.Show("This product is already added.");
@@ -126,7 +152,7 @@ namespace Offline_Inventory_Management_System.Views.MyViews
                 }
             }
 
-            // Add new row (hidden ProductId, visible name + quantity)
+            // Add new row
             dataGridView1.Rows.Add(selectedProduct.ProductId, selectedProduct.ProductName, qty);
 
             // Clear fields
@@ -162,21 +188,40 @@ namespace Offline_Inventory_Management_System.Views.MyViews
             order.OrderedOn = currentTime;
 
             OrderRepo orderRepo = new OrderRepo();
-            var res = orderRepo.AddOrder(order);
 
-            if(res != null)
+            var res = orderRepo.AddOrder(order);
+            List<OrderProduct> orderProductsRes = new List<OrderProduct>();
+            if (res != null)
             {
+                OrderProductRepo orderProductRepo = new OrderProductRepo();
+                ProductRepo productRepo = new ProductRepo();
                 var orderProductReq = this.CollectOrderItems();
-                foreach(var orderProduct in orderProductReq)
+                foreach (var orderProduct in orderProductReq)
                 {
                     orderProduct.OrderId = res.OrderId;
+                    var orderProductRes = orderProductRepo.AddOrder(orderProduct);
+                    if (orderProductRes != null)
+                    {
+                        productRepo.UpdateProductQuantity(orderProductRes.ProductId, orderProductRes.OrderQuantity, true);
+                    }
+                    orderProductsRes.Add(orderProductRes);
+                }
+
+                if (orderProductsRes.Count > 0)
+                {
+                    MessageBox.Show("Order Added Succesful");
                 }
             }
             else
             {
                 throw new Exception();
             }
-            
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        { 
+            Router.Navigate(new OrderPage());
         }
     }
 }
