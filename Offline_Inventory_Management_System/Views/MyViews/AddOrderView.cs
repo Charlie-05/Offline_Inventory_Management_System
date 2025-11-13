@@ -97,30 +97,40 @@ namespace Offline_Inventory_Management_System.Views.MyViews
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Ensure columns exist
+
             if (dataGridView1.Columns.Count == 0)
             {
-                dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+                dataGridView1.AutoGenerateColumns = false;
+                dataGridView1.Columns.Clear();
+
+                // ProductId (hidden)
+                var colId = new DataGridViewTextBoxColumn
                 {
                     Name = "ProductId",
                     HeaderText = "Product ID",
                     Visible = false
-                });
+                };
+                dataGridView1.Columns.Add(colId);
 
-                dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+                // ProductName
+                var colName = new DataGridViewTextBoxColumn
                 {
                     Name = "ProductName",
-                    HeaderText = "Product Name"
-                });
+                    HeaderText = "Product Name",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                };
+                dataGridView1.Columns.Add(colName);
 
-                dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
+                // Quantity
+                var colQty = new DataGridViewTextBoxColumn
                 {
                     Name = "Quantity",
                     HeaderText = "Quantity"
-                });
+                };
+                dataGridView1.Columns.Add(colQty);
             }
 
-            // Existing validation 
+            // Validation
             if (comboBox1.SelectedItem == null)
             {
                 MessageBox.Show("Please select a product first.");
@@ -140,26 +150,33 @@ namespace Offline_Inventory_Management_System.Views.MyViews
                 return;
             }
 
-            // Prevent duplicates
+        
             foreach (DataGridViewRow r in dataGridView1.Rows)
             {
                 if (r.IsNewRow) continue;
 
-                if ((int)r.Cells["ProductId"].Value == selectedProduct.ProductId)
+                if (Convert.ToInt32(r.Cells["ProductId"].Value) == selectedProduct.ProductId)
                 {
                     MessageBox.Show("This product is already added.");
                     return;
                 }
             }
 
-            // Add new row
-            dataGridView1.Rows.Add(selectedProduct.ProductId, selectedProduct.ProductName, qty);
+         
+            int newIndex = dataGridView1.Rows.Add();
+            DataGridViewRow newRow = dataGridView1.Rows[newIndex];
+
+            newRow.Cells["ProductId"].Value = selectedProduct.ProductId;
+            newRow.Cells["ProductName"].Value = selectedProduct.ProductName;
+            newRow.Cells["Quantity"].Value = qty;
 
             // Clear fields
             comboBox1.Text = "";
             textBox1.Text = "";
             comboBox1.Focus();
         }
+
+
 
         private List<OrderProduct> CollectOrderItems()
         {

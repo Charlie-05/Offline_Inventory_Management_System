@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Offline_Inventory_Management_System.Models;
 
 namespace Offline_Inventory_Management_System
 {
@@ -24,5 +25,10 @@ namespace Offline_Inventory_Management_System
             newPage.Dock = DockStyle.Fill;
             _mainPanel.Controls.Add(newPage);
         }
+    }
+
+    public static class AppUser
+    {
+        public static User CurrentUser;
     }
 }

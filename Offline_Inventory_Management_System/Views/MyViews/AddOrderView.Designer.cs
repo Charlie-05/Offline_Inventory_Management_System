@@ -95,7 +95,27 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5, dataGridViewTextBoxColumn6 });
+                        dataGridView1.Columns.AddRange(new DataGridViewColumn[]
+            {
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "ProductId",
+                    HeaderText = "Product ID",
+                    Visible = false
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "ProductName",
+                    HeaderText = "Product Name",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "Quantity",
+                    HeaderText = "Quantity"
+                }
+            });
+
             dataGridView1.Location = new Point(68, 157);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;

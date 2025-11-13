@@ -191,87 +191,64 @@ namespace Offline_Inventory_Management_System.Repositories
         public Product UpdateProductQuantity(int productID, decimal quantity, bool isAdded)
         {
             Product getProduct = this.ReadProductById(productID);
-            decimal newQuantity = 0;
-            if (getProduct != null)
+            if (getProduct == null)
+                throw new Exception("Product not found.");
+
+            decimal newQuantity = getProduct.Quantity;
+
+            if (isAdded)
             {
-                if (isAdded)
-                {
-                    newQuantity = getProduct.Quantity + quantity;
-                }
-                else
-                {
-                    bool availabiliy = this.CheckAvailability(getProduct.ProductId, quantity);
-                    if (availabiliy)
-                    {
-                        newQuantity = getProduct.Quantity - quantity;
-                    }
-                   
-                }
-                using (SqlConnection conn = new SqlConnection(DBConnectionString))
-                {
-                    conn.Open();
-                    string query = "UPDATE Products SET Quantity = @Quantity where ProductId = @ProductId";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Quantity", newQuantity);
-                        cmd.Parameters.AddWithValue("@ProductId", getProduct.ProductId);
-                        int rowsAffected = cmd.ExecuteNonQuery();
-                        if (rowsAffected > 0)
-                        {
-                            return getProduct;
-                        }
-                        else
-                        {
-                            throw new Exception();
-                        }
-                    }
-                }
+                newQuantity += quantity;
             }
             else
             {
-                throw new Exception();
+                bool availability = this.CheckAvailability(getProduct.ProductId, quantity);
+                if (!availability)
+                {
+                    MessageBox.Show($"Not enough stock for {getProduct.ProductName}. Available: {getProduct.Quantity}");
+                    return getProduct; 
+                }
+
+                newQuantity -= quantity;
             }
+
+            using (SqlConnection conn = new SqlConnection(DBConnectionString))
+            {
+                conn.Open();
+                string query = "UPDATE Products SET Quantity = @Quantity WHERE ProductId = @ProductId";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Quantity", newQuantity);
+                    cmd.Parameters.AddWithValue("@ProductId", getProduct.ProductId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            getProduct.Quantity = newQuantity;
+            return getProduct;
         }
+
 
         public bool CheckAvailability(int productId, decimal quantity)
         {
-
-            try
+            using (SqlConnection conn = new SqlConnection(DBConnectionString))
             {
-                using (SqlConnection conn = new SqlConnection(DBConnectionString))
+                conn.Open();
+                string query = "SELECT Quantity FROM Products WHERE ProductID = @ProductId";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    Product product = new Product();
-                    conn.Open();
-                    string query = "SELECT Quantity FROM Products WHERE ProductID = @ProductId";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@ProductId", productId);
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            product = new Product
-                            {
-                                ProductId = Convert.ToInt32(reader["ProductId"]),
-                                Quantity = Convert.ToInt32(reader["Quantity"]),
-                            };
-                        }
-                    }
-                    if (product.Quantity > quantity)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    cmd.Parameters.AddWithValue("@ProductId", productId);
+                    object result = cmd.ExecuteScalar();
 
+                    if (result == null)
+                        return false;
+
+                    decimal availableQty = Convert.ToDecimal(result);
+                    return availableQty >= quantity;
                 }
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
         }
+
 
         public List<Product> GetLowStockProducts()
         {

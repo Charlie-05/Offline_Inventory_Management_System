@@ -53,9 +53,10 @@ namespace Offline_Inventory_Management_System.Views
                     {
                         MessageBox.Show("Login successful!", "Success",
                                         MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                        AppUser.CurrentUser = user;
                         // Redirect to MainForm
                         MainForm mainForm = new MainForm();
+                       
                         this.Hide();
                         mainForm.Show();
                     }
